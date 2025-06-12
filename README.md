@@ -1,62 +1,210 @@
-# 🚀 Getting started with Strapi
+🚀 Strapi Deployment with Docker, GitHub Actions, Ansible, and Minikube
+This project is a containerized Strapi CMS application with automated CI/CD using GitHub Actions and Ansible. The app runs on a local Kubernetes cluster via Minikube and is accessible at http://localhost:8080.
 
-Strapi comes with a full featured [Command Line Interface](https://docs.strapi.io/dev-docs/cli) (CLI) which lets you scaffold and manage your project in seconds.
+🧱 Stack
+Strapi (Headless CMS)
 
-### `develop`
+Docker (Containerization)
 
-Start your Strapi application with autoReload enabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-develop)
+GitHub Actions (CI: Build & Push)
 
-```
-npm run develop
-# or
-yarn develop
-```
+Docker Hub (Container Registry)
 
-### `start`
+Ansible (CD: Deployment automation)
 
-Start your Strapi application with autoReload disabled. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-start)
+Minikube + Kubernetes (Local Cluster)
 
-```
-npm run start
-# or
-yarn start
-```
+Prometheus + Grafana (Monitoring - coming soon)
 
-### `build`
+📦 Project Structure
+bash
+Copy
+Edit
+├── Dockerfile               # Container image for Strapi
+├── .github/workflows/ci.yml# GitHub Actions CI pipeline
+├── ansible/
+│   ├── playbook.yml         # CD playbook for Kubernetes deployment
+│   └── inventory.ini
+├── k8s/
+│   ├── deployment.yaml
+│   ├── service.yaml
+├── README.md
+└── ...
+⚙️ CI/CD Workflow
+🔄 Continuous Integration (GitHub Actions)
+Trigger: Code push to main
 
-Build your admin panel. [Learn more](https://docs.strapi.io/dev-docs/cli#strapi-build)
+Steps:
 
-```
-npm run build
-# or
-yarn build
-```
+Build Docker image
 
-## ⚙️ Deployment
+Push image to Docker Hub
 
-Strapi gives you many possible deployment options for your project including [Strapi Cloud](https://cloud.strapi.io). Browse the [deployment section of the documentation](https://docs.strapi.io/dev-docs/deployment) to find the best solution for your use case.
+🚀 Continuous Deployment (Ansible)
+Trigger: Manual run
 
-```
-yarn strapi deploy
-```
+Steps:
 
-## 📚 Learn more
+Pull Docker image from Docker Hub
 
-- [Resource center](https://strapi.io/resource-center) - Strapi resource center.
-- [Strapi documentation](https://docs.strapi.io) - Official Strapi documentation.
-- [Strapi tutorials](https://strapi.io/tutorials) - List of tutorials made by the core team and the community.
-- [Strapi blog](https://strapi.io/blog) - Official Strapi blog containing articles made by the Strapi team and the community.
-- [Changelog](https://strapi.io/changelog) - Find out about the Strapi product updates, new features and general improvements.
+Start Minikube
 
-Feel free to check out the [Strapi GitHub repository](https://github.com/strapi/strapi). Your feedback and contributions are welcome!
+Deploy app to Kubernetes
 
-## ✨ Community
+Expose service on localhost:8080
 
-- [Discord](https://discord.strapi.io) - Come chat with the Strapi community including the core team.
-- [Forum](https://forum.strapi.io/) - Place to discuss, ask questions and find answers, show your Strapi project and get feedback or just talk with other Community members.
-- [Awesome Strapi](https://github.com/strapi/awesome-strapi) - A curated list of awesome things related to Strapi.
+🛠️ Usage
+1. Create Strapi App (one-time)
+bash
+Copy
+Edit
+npx create-strapi@latest my-project
+cd my-project
+2. Build & Run Locally (optional)
+bash
+Copy
+Edit
+docker build -t my-strapi-app .
+docker run -p 1337:1337 my-strapi-app
+3. Trigger CI (Push to GitHub)
+bash
+Copy
+Edit
+git push origin main
+4. Run CD via Ansible
+bash
+Copy
+Edit
+cd ansible
+ansible-playbook -i inventory.ini playbook.yml
+📍 Access the App
+Once deployed via Ansible and Kubernetes:
+
+📌 URL: http://localhost:8080
+---
+
+## 🚀 Strapi Deployment with Docker, GitHub Actions, Ansible, Minikube, and Monitoring
+
+This project is a containerized Strapi CMS application with full CI/CD automation and monitoring support. It uses GitHub Actions for CI, Ansible for CD to a local Kubernetes cluster via Minikube, and Prometheus + Grafana for monitoring.
 
 ---
 
-<sub>🤫 Psst! [Strapi is hiring](https://strapi.io/careers).</sub>
-# trigger
+### 🧱 Stack
+
+* **Strapi** (Headless CMS)
+* **Docker** (Containerization)
+* **GitHub Actions** (CI: Build & Push)
+* **Docker Hub** (Container Registry)
+* **Ansible** (CD: Deploy to Kubernetes)
+* **Minikube** (Local Kubernetes Cluster)
+* **Prometheus + Grafana** (Monitoring)
+
+---
+
+### 📦 Project Structure
+
+```
+├── Dockerfile
+├── .github/workflows/ci.yml
+├── ansible/
+│   ├── playbook.yml
+│   └── inventory.ini
+├── k8s/
+│   ├── deployment.yaml
+│   ├── service.yaml
+├── monitoring/
+│   ├── prometheus.yml
+│   ├── docker-compose.yml
+│   └── grafana/
+│       └── dashboards/
+├── README.md
+└── ...
+```
+
+---
+
+### ⚙️ CI/CD Workflow
+
+#### 🔄 Continuous Integration (GitHub Actions)
+
+* **Trigger:** Code push to `main`
+* **Steps:**
+
+  * Build Docker image
+  * Push image to Docker Hub
+
+#### 🚀 Continuous Deployment (Ansible)
+
+* **Steps:**
+
+  * Start Minikube
+  * Pull latest Docker image
+  * Deploy app to Kubernetes
+  * Expose service on `localhost:8080`
+
+---
+
+### 📈 Monitoring Setup (Prometheus + Grafana)
+
+#### ✅ How to Start
+
+Navigate to the monitoring directory and launch both services with Docker:
+
+```bash
+cd monitoring
+docker-compose up -d
+```
+
+#### 🔧 Prometheus
+
+* **Job Targets:** Strapi Pod metrics (if exported via middleware or a sidecar)
+* **Config:** `monitoring/prometheus.yml`
+
+#### 📊 Grafana
+
+* **URL:** `http://localhost:3000`
+* **Login:** `admin` / `admin`
+* **Add Prometheus as a Data Source**
+* **Import Dashboards** from `monitoring/grafana/dashboards/`
+
+> You can use a Node Exporter or custom middleware in Strapi to expose metrics.
+
+---
+
+### 🛠️ Usage
+
+#### 1. Create Strapi App (initial setup)
+
+```bash
+npx create-strapi@latest my-project
+cd my-project
+```
+
+#### 2. Build & Test Locally
+
+```bash
+docker build -t my-strapi-app .
+docker run -p 1337:1337 my-strapi-app
+```
+
+#### 3. CI/CD Deployment
+
+```bash
+git push origin main
+cd ansible
+ansible-playbook -i inventory.ini playbook.yml
+```
+
+---
+
+### 📍 Access URLs
+
+| Service    | URL                                            |
+| ---------- | ---------------------------------------------- |
+| Strapi App | [http://localhost:8080](http://localhost:8080) |
+| Grafana    | [http://localhost:3000](http://localhost:3000) |
+| Prometheus | [http://localhost:9090](http://localhost:9090) |
+
+---
+
+

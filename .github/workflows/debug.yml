@@ -1,0 +1,11 @@
+name: Debug Secrets
+
+on: [push]
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo Docker Username
+        run: echo "DOCKER USER: ${{ secrets.DOCKER_HUB_USERNAME::5 }}****"
+
